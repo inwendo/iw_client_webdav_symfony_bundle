@@ -10,16 +10,8 @@ Edit the composer.json and add the following information:
 
 ````json
     //...
-
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/inwendo/iw_client_webdav_symfony_bundle"
-        }
-    ],
-    //...
     "require": {
-        "inwendo/iw_client_webdav_symfony_bundle": "dev-master"
+        "inwendo/iw_client_webdav_symfony_bundle": "^0.2"
     }
     //...
 ````
