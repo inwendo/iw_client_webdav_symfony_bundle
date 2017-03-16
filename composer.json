@@ -18,7 +18,7 @@
     "require": {
         "php": "^7.0",
         "symfony/symfony": "^2.8|^3.0",
-        "inwendo/iw_client_webdav_php": "*@dev",
+        "inwendo/iw_client_webdav_php": "dev-master",
         "inwendo/iw_client_auth_user_symfony_bundle": "dev-master"
     },
     "autoload": {
