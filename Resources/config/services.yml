@@ -1,0 +1,4 @@
+services:
+    inwendo.webdavclient.service:
+        class:     Inwendo\WebDavClientBundle\Tools\WebDavService
+        arguments: ["@service_container"]
