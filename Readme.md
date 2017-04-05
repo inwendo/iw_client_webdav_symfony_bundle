@@ -11,7 +11,7 @@ Edit the composer.json and add the following information:
 ````json
     //...
     "require": {
-        "inwendo/iw_client_webdav_symfony_bundle": "^0.2"
+        "inwendo/iw_client_webdav_symfony_bundle": ">=0.2"
     }
     //...
 ````
