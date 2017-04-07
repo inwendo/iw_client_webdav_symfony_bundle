@@ -30,9 +30,9 @@ class WebDavContactMapping
     private $webdavAccount;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="local_id", type="integer")
+     * @ORM\Column(name="local_id", type="string", length=255)
      */
     private $localId;
 
@@ -54,7 +54,7 @@ class WebDavContactMapping
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getLocalId()
     {
@@ -62,7 +62,7 @@ class WebDavContactMapping
     }
 
     /**
-     * @param int $localId
+     * @param string $localId
      */
     public function setLocalId($localId)
     {

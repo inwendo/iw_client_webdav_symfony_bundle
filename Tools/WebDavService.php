@@ -72,7 +72,7 @@ class WebDavService
 
     /**
      * @param int $local_user_id
-     * @param int $local_contact_id
+     * @param string $local_contact_id Unique Identifier for Contact
      * @param Contact $contact
      * @return bool
      */
@@ -114,7 +114,7 @@ class WebDavService
 
     /**
      * @param int $local_user_id
-     * @param int $local_contact_id
+     * @param string $local_contact_id Unique Identifier for Contact
      * @return bool
      */
     public function deleteContact($local_user_id, $local_contact_id){
