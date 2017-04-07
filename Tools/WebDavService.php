@@ -101,6 +101,7 @@ class WebDavService
                     $mapping->setDistantId($result->getId());
 
                     $this->db->getManager()->persist($mapping);
+                    $this->db->getManager()->flush();
                 } catch (\Exception $e) {
                     $this->containerInterface->get("logger")->addWarning("LoginService:saveContact New Contact could not be safed! ". $e->getMessage());
                     return false;
