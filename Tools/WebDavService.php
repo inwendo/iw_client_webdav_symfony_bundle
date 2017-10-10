@@ -7,6 +7,7 @@ use Inwendo\Auth\LoginBundle\Entity\ServiceProvider;
 use Inwendo\WebDav\Common\Api\ContactApi;
 use Inwendo\WebDav\Common\Api\WebDavLoginApi;
 use Inwendo\WebDav\Common\ApiClient;
+use Inwendo\WebDav\Common\ApiException;
 use Inwendo\WebDav\Common\Configuration;
 use Inwendo\WebDav\Common\Model\Contact;
 use Inwendo\WebDav\Common\Model\WebDavLogin;
@@ -92,10 +93,17 @@ class WebDavService
 
             $mapping = $this->db->getRepository("InwendoWebDavClientBundle:WebDavContactMapping")->findOneBy(array("localId" => $local_contact_id, "webdavAccount" => $serviceAccount));
             if($mapping != null){
+                /** WebDavContactMapping $mapping */
                 try{
                     $api->putContactItem($mapping->getDistantId(), $contact);
-                } catch (\Exception $e) {
-                    $this->containerInterface->get("logger")->addWarning("LoginService:saveContact Contact could not be updated! ". $e->getMessage());
+                } catch (ApiException $e) {
+                    if($e->getCode() == 404){
+                        $this->db->getManager()->remove($mapping);
+                        $this->db->getManager()->flush();
+                        $this->containerInterface->get("logger")->addWarning("LoginService:saveContact Contact could not be updated! Mapped Object not found. Deleted. ". $e->getMessage());
+                    }else{
+                        $this->containerInterface->get("logger")->addWarning("LoginService:saveContact Contact could not be updated! ". $e->getMessage());
+                    }
                     return false;
                 }
             }else{
