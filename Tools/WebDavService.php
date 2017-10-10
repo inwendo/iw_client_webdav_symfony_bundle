@@ -6,10 +6,12 @@ namespace Inwendo\WebDavClientBundle\Tools;
 use Inwendo\Auth\LoginBundle\Entity\ServiceProvider;
 use Inwendo\WebDav\Common\Api\ContactApi;
 use Inwendo\WebDav\Common\Api\WebDavLoginApi;
+use Inwendo\WebDav\Common\ApiClient;
 use Inwendo\WebDav\Common\Configuration;
 use Inwendo\WebDav\Common\Model\Contact;
 use Inwendo\WebDav\Common\Model\WebDavLogin;
 use Inwendo\WebDavClientBundle\Entity\WebDavContactMapping;
+use Inwendo\WebDavClientBundle\Entity\WebDavServiceAccount;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class WebDavService
@@ -42,7 +44,7 @@ class WebDavService
             ;
 
     }
-    public function getServiceAccount(int $id){
+    public function getServiceAccount(int $id): ?WebDavServiceAccount{
         return $this->db->getRepository("InwendoWebDavClientBundle:WebDavServiceAccount")->findOneBy(array("localUserId" => $id));
     }
 
@@ -56,8 +58,10 @@ class WebDavService
         $loggedIn = $this->containerInterface->get("inwendo.auth.login.loginservice")->checkLogin($this->getServiceProvider(), $serviceAccount);
         if($loggedIn){
 
-            Configuration::getDefaultConfiguration()->setAccessToken($serviceAccount->getAccessToken());
-            $api = new WebDavLoginApi();
+            $apiConfig = new Configuration();
+            $apiConfig->setAccessToken($serviceAccount->getAccessToken());
+            $apiClient = new ApiClient($apiConfig);
+            $api = new WebDavLoginApi($apiClient);
 
             try{
                 $api->putWebDavLoginItem($webDavLogin);
@@ -81,8 +85,10 @@ class WebDavService
         $loggedIn = $this->containerInterface->get("inwendo.auth.login.loginservice")->checkLogin($this->getServiceProvider(), $serviceAccount);
         if($loggedIn){
 
-            Configuration::getDefaultConfiguration()->setAccessToken($serviceAccount->getAccessToken());
-            $api = new ContactApi();
+            $apiConfig = new Configuration();
+            $apiConfig->setAccessToken($serviceAccount->getAccessToken());
+            $apiClient = new ApiClient($apiConfig);
+            $api = new ContactApi($apiClient);
 
             $mapping = $this->db->getRepository("InwendoWebDavClientBundle:WebDavContactMapping")->findOneBy(array("localId" => $local_contact_id, "webdavAccount" => $serviceAccount));
             if($mapping != null){
@@ -122,8 +128,10 @@ class WebDavService
         $loggedIn = $this->containerInterface->get("inwendo.auth.login.loginservice")->checkLogin($this->getServiceProvider(), $serviceAccount);
         if($loggedIn){
 
-            Configuration::getDefaultConfiguration()->setAccessToken($serviceAccount->getAccessToken());
-            $api = new ContactApi();
+            $apiConfig = new Configuration();
+            $apiConfig->setAccessToken($serviceAccount->getAccessToken());
+            $apiClient = new ApiClient($apiConfig);
+            $api = new ContactApi($apiClient);
 
             $mapping = $this->db->getRepository("InwendoWebDavClientBundle:WebDavContactMapping")->findOneBy(array("localId" => $local_contact_id, "webdavAccount" => $serviceAccount));
             if($mapping != null){
